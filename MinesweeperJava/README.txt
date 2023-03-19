@@ -4,7 +4,7 @@ Author: Zac Seales
 
 My initial attempt at coding Minesweeper.
 I've mainly used the tutorial series by "Jon" on youtube, with a few improvements.
-(Referenced below under "Resources").
+(Tutorial is referenced below under "Resources").
 
 MY IMPROVEMENTS:
 - Stored grid square sizes and positions in local variables to reduce number of calculations in the paint method.
