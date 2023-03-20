@@ -4,7 +4,7 @@ Author: Zac Seales
 
 My initial attempt at coding Minesweeper.
 I've mainly used the tutorial series by "Jon" on youtube, with a few improvements.
-(Tutorial is referenced below under "Resources").
+(Referenced below under "Resources").
 
 MY IMPROVEMENTS:
 - Stored grid square sizes and positions in local variables to reduce number of calculations in the paint method.
@@ -14,6 +14,8 @@ MY IMPROVEMENTS:
   released with the same mouse press then the box will be revealed (or flagged if right clicked).
 - Flags are added and removed with right click. (Instead of pressing flag button then checking if flag is active).
 - Used a switch statement to determine number colours, (Instead of multiple 'if' statements).
+- Created a method to reveal all neighbouring squares to a revealed box that has no neighbouring mines (chainReveal function).
+- Made all variables and methods private, where possible.
 
 POSSIBLE FUTURE IMPROVEMENTS:
 - Let user choose a difficulty level.
@@ -21,6 +23,9 @@ POSSIBLE FUTURE IMPROVEMENTS:
 - Let user choose grid size and number of mines.
 - Make UI elements easily modifiable. Currently, with the fixed sizes, any change in position or size can affect 
   other unrelated elements.
+- Still efficiency and dependency improvements to make. Code is reused in places (particularly the different mouse press actions).
+- Could do with another class to separate game state methods and values from the UI elements.
+- A lot of the nested statements and loops could be simplified.
 
 RESOURCES:
 

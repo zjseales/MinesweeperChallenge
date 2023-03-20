@@ -11,6 +11,12 @@ import javax.swing.JFrame;
 
 public class GUI extends JFrame{
 	
+	/** Random ID to keep compiler happy. */
+	private static final long serialVersionUID = 1L;
+	
+	/* The game board panel containing all UI elements and the paintComponent method. */
+	public GameBoard board;
+	
 	/** Constructor: Initializes a default game of Minesweeper
 	 *  using a (16x9) grid.
 	 */
@@ -23,8 +29,9 @@ public class GUI extends JFrame{
 		this.setResizable(false);
 		
 		// add the GameBoard UI panel to this window frame.
-		GameBoard board = new GameBoard();
+		board = new GameBoard();
 		this.setContentPane(board);
+		
 	}
 
 }

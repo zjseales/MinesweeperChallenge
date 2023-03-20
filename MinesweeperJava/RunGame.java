@@ -27,6 +27,9 @@ public class RunGame implements Runnable {
 	public void run() {
 		while(true) {
 			gui.repaint();
+			if (!gui.board.resetter) {
+				gui.board.checkVictoryStatus();
+			}
 		}
 	} //end run
 
