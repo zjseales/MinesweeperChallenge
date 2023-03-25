@@ -12,6 +12,12 @@
 # Log file
 *.log
 
+#Visual Studio Code directory
+.vscode/
+#Editor user settings
+/[Uu]serSettings/EditorUserSettings.asset
+ 
+
 # BlueJ files
 *.ctxt
 
