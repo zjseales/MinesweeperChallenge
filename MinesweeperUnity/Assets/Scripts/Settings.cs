@@ -26,7 +26,7 @@ public class Settings : MonoBehaviour
         // show Main Menu
         openMain();
         //set window size
-        Screen.SetResolution(600, 800, fullscreenMode);
+        Screen.SetResolution(800, 800, fullscreenMode);
     }
 
     // Start is called before the first frame update
@@ -50,7 +50,7 @@ public class Settings : MonoBehaviour
         switch (level)
         {
             case "LowRes":
-                Screen.SetResolution(640, 480, fullscreenMode);
+                Screen.SetResolution(800, 800, fullscreenMode);
                 break;
             case "MidRes":
                 Screen.SetResolution(1024, 800, fullscreenMode);
