@@ -8033,6 +8033,7 @@ MonoBehaviour:
   difficultyMenu: {fileID: 195687665}
   slider: {fileID: 86530699}
   resumeButton: {fileID: 1557580526}
+  activeGame: {fileID: 1438487112}
 --- !u!82 &1389063895
 AudioSource:
   m_ObjectHideFlags: 0
@@ -8545,7 +8546,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1438487115}
-  - component: {fileID: 1438487114}
+  - component: {fileID: 1438487116}
   m_Layer: 0
   m_Name: GameBoard
   m_TagString: Untagged
@@ -8553,18 +8554,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!156049354 &1438487114
-Grid:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1438487112}
-  m_Enabled: 1
-  m_CellSize: {x: 1, y: 1, z: 1}
-  m_CellGap: {x: 0.1, y: 0.1, z: 0}
-  m_CellLayout: 0
-  m_CellSwizzle: 0
 --- !u!224 &1438487115
 RectTransform:
   m_ObjectHideFlags: 0
@@ -8583,8 +8572,22 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: 16.8555, y: 9.9963}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1438487116
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1438487112}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 698dd67d0a2d26448999fae05554683d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  numMines: 0
+  box: {fileID: 8938646817193170577, guid: 7c124a23726d687408f07d749b52994d, type: 3}
 --- !u!1 &1453936157
 GameObject:
   m_ObjectHideFlags: 0

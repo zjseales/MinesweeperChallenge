@@ -27,13 +27,19 @@ public class Settings : MonoBehaviour
     public GameObject resumeButton;
 
     // The current active game
-    private GameBoard activeGame;
+    public GameObject activeGame;
 
     /** Close all ui panels except for main menu
      *  and set initial fixed window size.
      */
     private void Awake()
     {
+        // ensure game is not active
+        if (activeGame.activeSelf)
+        {
+            activeGame.SetActive(false);
+        }
+        // resume button only active when game is active
         resumeButton.SetActive(false);
         setVolume();
         fullscreenMode = false;
@@ -152,27 +158,42 @@ public class Settings : MonoBehaviour
     {
         // Close difficulty selection menu
         difficultyMenu.SetActive(false);
+        // close current game if active
+        if(activeGame.activeSelf)
+        {
+            activeGame.SetActive(false);
+        }
         //retrieve name of clicked item
         string difficulty = UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject.name;
 
         switch (difficulty)
         {
             case "Easy":
-                activeGame = new GameBoard(9, 9, 10);
+                initGameState(9, 9, 10);
                 break;
             case "Medium":
-                activeGame = new GameBoard(16, 16, 40);
+                initGameState(16, 16, 40);
                 break;
             case "Hard":
-                activeGame = new GameBoard(30, 16, 99);
+                initGameState(30, 16, 99);
                 break;
             case "Impossible":
-                activeGame = new GameBoard(40, 20, 300);
+                initGameState(40, 20, 300);
                 break;
             case "Custom":
                 Debug.Log("Not active yet.");
                 break;
         }
+    }
+
+    private void initGameState(int rows, int cols, int mines)
+    {
+        // initialize mines
+        activeGame.GetComponentInChildren<GameBoard>().numMines = mines;
+        // initialize arrays of box states and values
+        activeGame.GetComponentInChildren<GameBoard>().boxStates = new int[rows, cols];
+        activeGame.GetComponentInChildren<GameBoard>().boxValues = new int[rows, cols];
+        activeGame.SetActive(true);
     }
 
     /** Exit the Game and close window.

@@ -8,47 +8,35 @@ using UnityEngine;
  *  Script representing a game of minesweeper.
  *  @author Zac Seales
  */
-public class GameBoard
+public class GameBoard : MonoBehaviour
 {
     /** The state of each box in the grid.
      *  Either: 
      *      -1 (Flagged)
      *      0  (Revealed)
-     *      1  (Unrevealed and unflagged)
-     */
-    private int[,] boxStates;
+     *      1  (Unrevealed and unflagged). */
+    public int[,] boxStates;
     /** The number of neighbouring mines for each box
-     *  Either: (0-8) or 9 if the box contains a mine.
-     */
-    private int[,] boxValues;
+     *  Either: (0-8), or 9 if the box contains a mine. */
+    public int[,] boxValues;
+    /* The number of mines. */
+    public int numMines;
 
-    /** Constructor - Initializes data-fields using the argument values.
-     */
-    public GameBoard(int rows, int cols, int mines)
-    {
-        this.boxStates = new int[rows, cols];
-        this.boxValues = new int[rows, cols];
-        //initialize all box states as unrevealed and unflagged
-        for(int i = 0; i < rows; i++) 
-        {
-            for (int j = 0; j < cols; j++)
-            {
-                this.boxStates[i, j] = 1;
-            }
-        }
-    }
+    /* The interactable box prefab object. */
+    public GameObject box;
+    /* The size of each box in the grid. */
+    private int boxSize;
+
     // Start is called before the first frame update
     void Start()
     {
-        Debug.Log("Create game");
-        for (int i = 0; i < boxStates.GetLength(0); i++)
-        {
-            for (int j = 0; j < boxStates.GetLength(1); j++)
-            {
-                Debug.Log("" + boxStates[i, j] + ", ");
-            }
-            Debug.Log("\n");
-        }
+        int w = Screen.width;
+        int h = Screen.height;
+        boxSize = w / boxStates.GetLength(1);
+        Debug.Log("ScreenSize = " + w + "x" + h);
+        Debug.Log("BoxSize = " + boxSize);
+        // initialize grid box states using data-field size and display them.
+        initStates(boxStates.GetLength(0), boxStates.GetLength(1));
     }
 
     // Update is called once per frame
@@ -56,4 +44,20 @@ public class GameBoard
     {
         
     }
+
+    /** Initialize all box states as unrevealed and unflagged.
+     *  And display them in a grid layout on screen.
+     */
+    private void initStates(int rows, int cols)
+    {
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < cols; j++)
+            {
+                GameObject temp = GameObject.Instantiate(this.box, new Vector3(i * (boxSize/100) - (Screen.width / 141), j * (boxSize/100) - (Screen.height / 148), -5f), Quaternion.identity);
+                this.boxStates[i, j] = 1;
+            }
+        }
+    }
+
 }
