@@ -3,6 +3,13 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
 
+/** Settings.cs
+ *  Minesweeper Unity - Personal Challenge 2023
+ *  
+ *  Controls all UI menus, and game settings for the Minesweeper Unity project.
+ *  @author Zac Seales
+ */
+
 public class Settings : MonoBehaviour
 {
     // all UI Menus
@@ -16,28 +23,24 @@ public class Settings : MonoBehaviour
     // bool defining whether fullscreen is active.
     private bool fullscreenMode;
 
+    // The resume button (only active if game is active)
+    public GameObject resumeButton;
+
+    // The current active game
+    private GameBoard activeGame;
+
     /** Close all ui panels except for main menu
      *  and set initial fixed window size.
      */
     private void Awake()
     {
+        resumeButton.SetActive(false);
         setVolume();
         fullscreenMode = false;
         // show Main Menu
         openMain();
         //set window size
         Screen.SetResolution(800, 800, fullscreenMode);
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     /** Set screen resolution dependent on the name of the button pressed.
@@ -141,6 +144,35 @@ public class Settings : MonoBehaviour
         {
             AudioListener.volume = v;
         });
+    }
+
+    /** Initializes a new game of minesweeper.
+     */
+    public void newGame()
+    {
+        // Close difficulty selection menu
+        difficultyMenu.SetActive(false);
+        //retrieve name of clicked item
+        string difficulty = UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject.name;
+
+        switch (difficulty)
+        {
+            case "Easy":
+                activeGame = new GameBoard(9, 9, 10);
+                break;
+            case "Medium":
+                activeGame = new GameBoard(16, 16, 40);
+                break;
+            case "Hard":
+                activeGame = new GameBoard(30, 16, 99);
+                break;
+            case "Impossible":
+                activeGame = new GameBoard(40, 20, 300);
+                break;
+            case "Custom":
+                Debug.Log("Not active yet.");
+                break;
+        }
     }
 
     /** Exit the Game and close window.
