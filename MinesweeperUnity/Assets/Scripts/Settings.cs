@@ -186,7 +186,7 @@ public class Settings : MonoBehaviour
         }
     }
 
-    private void initGameState(int rows, int cols, int mines)
+    private void initGameState(int cols, int rows, int mines)
     {
         // initialize mines
         activeGame.GetComponentInChildren<GameBoard>().numMines = mines;

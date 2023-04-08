@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 using UnityEngine;
 
 /** GameBoard.cs
@@ -32,9 +33,10 @@ public class GameBoard : MonoBehaviour
     {
         int w = Screen.width;
         int h = Screen.height;
-        boxSize = w / boxStates.GetLength(1);
+        boxSize = Mathf.Min(h / boxStates.GetLength(0), w / boxStates.GetLength(1));
         Debug.Log("ScreenSize = " + w + "x" + h);
         Debug.Log("BoxSize = " + boxSize);
+        setupGrid(boxStates.GetLength(0), boxStates.GetLength(1));
         // initialize grid box states using data-field size and display them.
         initStates(boxStates.GetLength(0), boxStates.GetLength(1));
     }
@@ -43,6 +45,17 @@ public class GameBoard : MonoBehaviour
     void Update()
     {
         
+    }
+
+    /** Set up grid values so that the game fits on screen.
+     */
+    private void setupGrid(int rows, int cols)
+    {
+        GridLayoutGroup currentGrid = this.GetComponent<GridLayoutGroup>();
+        // set cell size
+        currentGrid.cellSize = new Vector2(boxSize, boxSize);
+        // set number of rows
+        currentGrid.constraintCount = rows;
     }
 
     /** Initialize all box states as unrevealed and unflagged.
@@ -54,8 +67,12 @@ public class GameBoard : MonoBehaviour
         {
             for (int j = 0; j < cols; j++)
             {
-                GameObject temp = GameObject.Instantiate(this.box, new Vector3(i * (boxSize/100) - (Screen.width / 141), j * (boxSize/100) - (Screen.height / 148), -5f), Quaternion.identity);
+                GameObject temp = GameObject.Instantiate(this.box, new Vector3(i, j, -5f), Quaternion.identity);
+                temp.name = "b" + i + "_" + j;
                 this.boxStates[i, j] = 1;
+                temp.transform.position = this.transform.position;
+                temp.GetComponent<RectTransform>().SetParent(this.transform);
+                //temp.GetComponent<RectTransform>().SetInsetAndSizeFromParentEdge(RectTransform.Edge.Left, i * boxSize + 5, boxSize);
             }
         }
     }
