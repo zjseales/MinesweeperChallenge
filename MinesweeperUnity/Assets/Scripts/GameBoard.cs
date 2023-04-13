@@ -25,7 +25,6 @@ public class GameBoard : MonoBehaviour
     public int numMines;
     /* The background image for a revealed square. */
     public Sprite revealedBox;
-
     /* The interactable box prefab object. */
     public GameObject box;
     /* The size of each box in the grid. */
@@ -52,6 +51,11 @@ public class GameBoard : MonoBehaviour
     {
         // get selected object
         GameObject selectedBox = UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject;
+        // do nothing if no object selected
+        if (selectedBox == null) 
+        {
+            return;
+        }
         // get indices of selected square
         Vector2 pos = getPosition(selectedBox.name);
         // ensure selected object was a square
@@ -63,11 +67,11 @@ public class GameBoard : MonoBehaviour
         if (boxStates[(int)pos.x, (int)pos.y] == 1 && boxValues[(int)pos.x, (int)pos.y] != 9)
         {
             selectedBox.GetComponent<Image>().sprite = revealedBox;
-            selectedBox.transform.GetChild(0).GetComponent<Text>().text = boxStates[(int)pos.x, (int)pos.y].ToString(); // switch to boxValues
+            selectedBox.transform.GetChild(0).GetComponent<Text>().text = boxValues[(int)pos.x, (int)pos.y].ToString();
         } 
         else if (boxValues[(int)pos.x, (int)pos.y] == 9)
         {
-            //display mine and end game
+            selectedBox.transform.GetChild(0).GetComponent<Text>().text = "" + 9;
         }
     }
 
@@ -84,17 +88,57 @@ public class GameBoard : MonoBehaviour
         // retrieve int values
         int x = int.Parse(Regex.Match(vals[0], @"\d+").Value);
         int y = int.Parse(vals[1]);
-        Vector2 pos = new Vector2(x, y);
-        return new Vector2(0, 0);
+        return new Vector2(x, y);
     }
 
     /** Called on every new game.
      */
     public void newGame()
     {
+        int rows = boxStates.GetLength(0);
+        int cols = boxStates.GetLength(1);
         fitToScreen();
         // initialize grid box states using data-field size and display them.
-        initStates(boxStates.GetLength(0), boxStates.GetLength(1));
+        initStates(rows, cols);
+        initMines(rows, cols);
+    }
+
+    /** Initialise all mines in the new game.
+     */
+    private void initMines(int rows, int cols)
+    {
+        float chance = numMines / (rows * cols);
+        int minesToPlace = placeMines(numMines, chance, rows, cols);
+        // if still mines to place
+        while (minesToPlace > 0)
+        {
+            // chance increases to avoid long wait time
+            chance += 0.01f;
+            minesToPlace = placeMines(minesToPlace, chance, rows, cols);
+        }
+    }
+
+    /** Place mines iteration.
+     */
+    private int placeMines(int minesToPlace, float chance, int rows, int cols)
+    {
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < cols; j++)
+            {
+                // place mines
+                if (boxValues[i, j] != 9 && Random.value <= chance)
+                {
+                    minesToPlace--;
+                    boxValues[i, j] = 9;
+                    if (minesToPlace == 0)
+                    {
+                        return 0;
+                    }
+                }
+            }
+        }
+        return minesToPlace;
     }
 
     /** Destroy all grid objects to get ready for new game setup.
@@ -114,8 +158,6 @@ public class GameBoard : MonoBehaviour
         int w = Screen.width;
         int h = Screen.height;
         boxSize = Mathf.Min(h / boxStates.GetLength(0), w / boxStates.GetLength(1));
-        Debug.Log("ScreenSize = " + w + "x" + h);
-        Debug.Log("BoxSize = " + boxSize);
         setupGrid(boxStates.GetLength(0), boxStates.GetLength(1));
     }
 
