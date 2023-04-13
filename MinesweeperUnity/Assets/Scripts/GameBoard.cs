@@ -194,7 +194,7 @@ public class GameBoard : MonoBehaviour
             for (int j = 0; j < cols; j++)
             {
                 // place mines
-                if (boxValues[i, j] != 9 && Random.value <= chance)
+                if (!isMine(new Vector2(i, j)) && Random.value <= chance)
                 {
                     minesToPlace--;
                     boxValues[i, j] = 9;
