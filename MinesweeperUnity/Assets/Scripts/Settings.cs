@@ -49,6 +49,16 @@ public class Settings : MonoBehaviour
         Screen.SetResolution(800, 800, fullscreenMode);
     }
 
+    // called every frame
+    void Update()
+    {
+        // toggles menu when esc key is pressed.
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            toggleMenu();
+        }
+    }
+
     /** Set screen resolution dependent on the name of the button pressed.
      */
     public void setResolution()
@@ -70,6 +80,11 @@ public class Settings : MonoBehaviour
             case "EpicRes":
                 Screen.SetResolution(1920, 1080, fullscreenMode);
                 break;
+        }
+        // if game is active, re-adjust grid size
+        if (activeGame.activeSelf)
+        {
+            StartCoroutine(activeGame.GetComponent<GameBoard>().waitBeforeAdjust());
         }
     }
 
@@ -97,6 +112,23 @@ public class Settings : MonoBehaviour
         }
     }
 
+    /** Esc key opens (or closes) the menu while a game is active.
+     */
+    public void toggleMenu()
+    {
+        // close menu if open
+        if (mainMenu.activeSelf && activeGame.activeSelf)
+        {
+            mainMenu.SetActive(false);
+        } 
+        else if (!mainMenu.activeSelf)
+        {
+            difficultyMenu.SetActive(false);
+            optionsMenu.SetActive(false);
+            mainMenu.SetActive(true);
+        }
+    }
+
     /** Toggle windowed screen.
      */
     public void windowed()
@@ -111,6 +143,11 @@ public class Settings : MonoBehaviour
     {
         fullscreenMode = true;
         Screen.fullScreenMode = FullScreenMode.FullScreenWindow;
+        // if game is active, re-adjust grid size
+        if (activeGame.activeSelf)
+        {
+            activeGame.GetComponent<GameBoard>().fitToScreen();
+        }
     }
 
     /** Close all UI Panels and open Main menu.
@@ -156,6 +193,8 @@ public class Settings : MonoBehaviour
      */
     public void newGame()
     {
+        // ensure menu has resume button
+        resumeButton.SetActive(true);
         // Close difficulty selection menu
         difficultyMenu.SetActive(false);
         // close current game if active

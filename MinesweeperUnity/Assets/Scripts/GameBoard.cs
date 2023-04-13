@@ -31,12 +31,7 @@ public class GameBoard : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        int w = Screen.width;
-        int h = Screen.height;
-        boxSize = Mathf.Min(h / boxStates.GetLength(0), w / boxStates.GetLength(1));
-        Debug.Log("ScreenSize = " + w + "x" + h);
-        Debug.Log("BoxSize = " + boxSize);
-        setupGrid(boxStates.GetLength(0), boxStates.GetLength(1));
+        fitToScreen();
         // initialize grid box states using data-field size and display them.
         initStates(boxStates.GetLength(0), boxStates.GetLength(1));
     }
@@ -45,6 +40,25 @@ public class GameBoard : MonoBehaviour
     void Update()
     {
         
+    }
+
+    /** Fits the grid on screen. To be called when screen settings are changed midgame.
+     */
+    public void fitToScreen()
+    {
+        int w = Screen.width;
+        int h = Screen.height;
+        boxSize = Mathf.Min(h / boxStates.GetLength(0), w / boxStates.GetLength(1));
+        Debug.Log("ScreenSize = " + w + "x" + h);
+        Debug.Log("BoxSize = " + boxSize);
+        setupGrid(boxStates.GetLength(0), boxStates.GetLength(1));
+    }
+
+    // Adjust grid size after screen resolution has been adjusted.
+    public IEnumerator waitBeforeAdjust()
+    {
+        yield return new WaitForSeconds(0.3f);
+        fitToScreen();
     }
 
     /** Set up grid values so that the game fits on screen.
@@ -72,7 +86,6 @@ public class GameBoard : MonoBehaviour
                 this.boxStates[i, j] = 1;
                 temp.transform.position = this.transform.position;
                 temp.GetComponent<RectTransform>().SetParent(this.transform);
-                //temp.GetComponent<RectTransform>().SetInsetAndSizeFromParentEdge(RectTransform.Edge.Left, i * boxSize + 5, boxSize);
             }
         }
     }
