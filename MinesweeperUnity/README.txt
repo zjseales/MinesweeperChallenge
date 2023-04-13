@@ -28,6 +28,7 @@ POSSIBLE FUTURE IMPROVEMENTS:
 	- Multiple language options.
 	- Keyboard only navigation.
 - Could add an undo function.
+- Add achievements.
 - For Experts: Make grid changes voice activated.
 	-("Reveal square 6, 12", "Flag square 8, 10", "Restart", "New Game - Difficulty Hard").
 
