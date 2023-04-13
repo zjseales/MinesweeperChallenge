@@ -76,6 +76,8 @@ public class GameBoard : MonoBehaviour
     }
 
     /** Returns the vector position of the grid square using the name parameter.
+     *<param name="name"> The name of the grid square having it's position returned. </param>
+     *<returns> The position of the input parameter in the grid space. </returns>
      */
     private Vector2 getPosition(string name)
     {
@@ -92,24 +94,27 @@ public class GameBoard : MonoBehaviour
     }
 
     /** Called on every new game.
+     *  Initialises all global fields.
      */
     public void newGame()
     {
         int rows = boxStates.GetLength(0);
         int cols = boxStates.GetLength(1);
         fitToScreen();
-        // initialize grid box states using data-field size and display them.
-        initStates(rows, cols);
+        // initialize grid box states and values
         initMines(rows, cols);
+        initStates(rows, cols);
     }
 
     /** Initialise all mines in the new game.
+     *<param name="rows"> The number of rows in the grid space. </param>
+     *<param name="cols"> The number of columns in the grid space. </param>
      */
     private void initMines(int rows, int cols)
     {
         float chance = numMines / (rows * cols);
         int minesToPlace = placeMines(numMines, chance, rows, cols);
-        // if still mines to place
+        // if still mines to place, iterate til none left
         while (minesToPlace > 0)
         {
             // chance increases to avoid long wait time
@@ -118,7 +123,25 @@ public class GameBoard : MonoBehaviour
         }
     }
 
+    /** Returns a boolean defining whether the input vector position contains a mine.
+     *<param name="check"> The 2D-Vector index of the neighbouring square being checked for a mine. </param>
+     *<returns> A boolean defining whether a mine is stored in the Vector position </returns>
+     */
+    private bool isMine(Vector2 check) 
+    {
+        if (boxValues[(int)check.x, (int)check.y] == 9)
+        {
+            return true;
+        }
+        return false;
+    }
+
     /** Place mines iteration.
+     *<param name="minesToPlace"> The number of mines still needed to place in the grid. </param>
+     *<param name="chance"> The probability that an grid square will contain a mine. </param>
+     *<param name="rows"> The number of rows in the grid space. </param>
+     *<param name="cols"> The number of columns in the grid space. </param>
+     *<returns> The number of mines still to place after iteration. </returns>
      */
     private int placeMines(int minesToPlace, float chance, int rows, int cols)
     {
@@ -181,7 +204,8 @@ public class GameBoard : MonoBehaviour
     }
 
     /** Initialize all box states as unrevealed and unflagged.
-     *  And display them in a grid layout on screen.
+     *<param name="rows"> The number of rows in the grid space. </param>
+     *<param name="cols"> The number of columns in the grid space. </param>
      */
     private void initStates(int rows, int cols)
     {
@@ -189,13 +213,45 @@ public class GameBoard : MonoBehaviour
         {
             for (int j = 0; j < cols; j++)
             {
+                //initialise states
                 GameObject temp = GameObject.Instantiate(this.box, new Vector3(i, j, -5f), Quaternion.identity);
                 temp.name = "b" + i + "_" + j;
                 this.boxStates[i, j] = 1;
                 temp.transform.position = this.transform.position;
                 temp.GetComponent<RectTransform>().SetParent(this.transform);
+
+                // initialise unseen values (representing neighbouring mines)
+                if (boxValues[i, j] != 9)
+                {
+                    boxValues[i, j] = countNeighbours(i, j);
+                }
             }
         }
+    }
+
+    /** Counts all neighbouring mines to the psotion defined by the arguments.
+     *<param name="x"> The x index of the grid square being analyzed. </param>
+     *<param name="y"> The y index of the grid square being analyzed. </param>
+     *<returns> The number of neighbouring mines. </returns>
+     */
+    private int countNeighbours(int x, int y)
+    {
+        int n = 0;
+        for (int i = x-1; i < x+2; i++)
+        {
+            for (int j = y - 1; j < y + 2; j++)
+            {
+                //ensure in bounds
+                if (j < boxStates.GetLength(1) && j >= 0 && i >= 0 && i < boxStates.GetLength(0))
+                {
+                    if (isMine(new Vector2(i, j)))
+                    {
+                        n++;
+                    }
+                }
+            }
+        }
+        return n;
     }
 
 }
