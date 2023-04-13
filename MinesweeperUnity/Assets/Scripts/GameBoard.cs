@@ -63,15 +63,58 @@ public class GameBoard : MonoBehaviour
         {
             return;
         }
+        switchToRevealed((int)pos.x, (int)pos.y, selectedBox);
+    }
+
+    private void switchToRevealed(int x, int y, GameObject boxToReveal)
+    {
+        // do not reveal if flagged, or if already revealed.
+        if (boxStates[x, y] == -1 || boxStates[x, y] == 0)
+        {
+            return;
+        }
+        //set as revealed
+        boxStates[x, y] = 0;
         // switch unrevealed box to revealed (if no mine)
-        if (boxStates[(int)pos.x, (int)pos.y] == 1 && boxValues[(int)pos.x, (int)pos.y] != 9)
+        if (!isMine(new Vector2(x, y)))
         {
-            selectedBox.GetComponent<Image>().sprite = revealedBox;
-            selectedBox.transform.GetChild(0).GetComponent<Text>().text = boxValues[(int)pos.x, (int)pos.y].ToString();
-        } 
-        else if (boxValues[(int)pos.x, (int)pos.y] == 9)
+            boxToReveal.GetComponent<Image>().sprite = revealedBox;
+            if (boxValues[x, y] != 0)
+            {
+                boxToReveal.transform.GetChild(0).GetComponent<Text>().text = boxValues[x, y].ToString();
+            }
+            else
+            {
+                chainReveal(x, y);
+            }
+        }
+        else if (isMine(new Vector2(x, y)))
         {
-            selectedBox.transform.GetChild(0).GetComponent<Text>().text = "" + 9;
+            boxToReveal.transform.GetChild(0).GetComponent<Text>().text = "" + 9;
+        }
+    }
+
+    /** Reveals all neighbouring boxes that have no neighbouring mines.
+     *<param name="x"> The x index of the square having it's neighbours revealed. </param>
+     *<param name="y"> The y index of the square having it's neighbours revealed. </param>
+     */
+    private void chainReveal(int x, int y)
+    {
+        int nextX;
+        int nextY;
+        for (int i = -1; i < 2; i++)
+        {
+            nextX = x + i;
+            for (int j = -1; j < 2; j++)
+            {
+                nextY = y + j;
+                //ensure in bounds
+                if (nextY < boxStates.GetLength(1) && nextY >= 0 && nextX >= 0 && nextX < boxStates.GetLength(0))
+                {
+                    GameObject nextBox = GameObject.Find("b" + nextX + "_" + nextY);
+                    switchToRevealed(nextX, nextY, nextBox);
+                }
+            }
         }
     }
 
@@ -117,7 +160,8 @@ public class GameBoard : MonoBehaviour
         // if still mines to place, iterate til none left
         while (minesToPlace > 0)
         {
-            // chance increases to avoid long wait time
+            // chance increases on each iteration
+            // to avoid long wait times
             chance += 0.01f;
             minesToPlace = placeMines(minesToPlace, chance, rows, cols);
         }
@@ -229,7 +273,8 @@ public class GameBoard : MonoBehaviour
         }
     }
 
-    /** Counts all neighbouring mines to the psotion defined by the arguments.
+    /** Counts all neighbouring mines to the psotion defined by the arguments
+     *  and returns the resulting value.
      *<param name="x"> The x index of the grid square being analyzed. </param>
      *<param name="y"> The y index of the grid square being analyzed. </param>
      *<returns> The number of neighbouring mines. </returns>
