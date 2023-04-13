@@ -17,6 +17,9 @@ public class Settings : MonoBehaviour
     public GameObject optionsMenu;
     public GameObject difficultyMenu;
 
+    /* Instructions overlay */
+    public GameObject menuInstructions;
+
     // The volume slider object
     public Slider slider;
 
@@ -39,6 +42,7 @@ public class Settings : MonoBehaviour
         {
             activeGame.SetActive(false);
         }
+        menuInstructions.SetActive(false);
         // resume button only active when game is active
         resumeButton.SetActive(false);
         setVolume();
@@ -206,6 +210,7 @@ public class Settings : MonoBehaviour
         {
             setDifficulty();
         }
+        menuInstructions.SetActive(true);
     }
 
     private void initGameState(int cols, int rows, int mines)
