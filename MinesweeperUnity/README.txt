@@ -13,6 +13,7 @@ IMPROVEMENTS:
 - Update methods (methods called each frame) only detect input, rather than constantly iterating
   the entire grid to detect any state changes.
 - Added an original music loop.
+- Ensured all grid sizes fit on any screen size.
 
 POSSIBLE FUTURE IMPROVEMENTS:
 - Make window size continuously resizable (rather than choosing from a set of options).
