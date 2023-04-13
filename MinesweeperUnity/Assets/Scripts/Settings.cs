@@ -200,8 +200,37 @@ public class Settings : MonoBehaviour
         // close current game if active
         if(activeGame.activeSelf)
         {
-            activeGame.SetActive(false);
+            StartCoroutine(waitForReset());
         }
+        else
+        {
+            setDifficulty();
+        }
+    }
+
+    private void initGameState(int cols, int rows, int mines)
+    {
+        // initialize mines
+        activeGame.GetComponentInChildren<GameBoard>().numMines = mines;
+        // initialize arrays of box states and values
+        activeGame.GetComponentInChildren<GameBoard>().boxStates = new int[rows, cols];
+        activeGame.GetComponentInChildren<GameBoard>().boxValues = new int[rows, cols];
+        activeGame.SetActive(true);
+    }
+
+    IEnumerator waitForReset()
+    {
+        activeGame.GetComponent<GameBoard>().Reset();
+        yield return new WaitForSeconds(0.2f);
+        activeGame.SetActive(false);
+        setDifficulty();
+        activeGame.GetComponent<GameBoard>().newGame();
+    }
+
+    /** Sets difficulty of new game
+     */
+    private void setDifficulty()
+    {
         //retrieve name of clicked item
         string difficulty = UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject.name;
 
@@ -223,16 +252,6 @@ public class Settings : MonoBehaviour
                 Debug.Log("Not active yet.");
                 break;
         }
-    }
-
-    private void initGameState(int cols, int rows, int mines)
-    {
-        // initialize mines
-        activeGame.GetComponentInChildren<GameBoard>().numMines = mines;
-        // initialize arrays of box states and values
-        activeGame.GetComponentInChildren<GameBoard>().boxStates = new int[rows, cols];
-        activeGame.GetComponentInChildren<GameBoard>().boxValues = new int[rows, cols];
-        activeGame.SetActive(true);
     }
 
     /** Exit the Game and close window.

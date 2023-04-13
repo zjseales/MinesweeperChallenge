@@ -31,15 +31,30 @@ public class GameBoard : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        fitToScreen();
-        // initialize grid box states using data-field size and display them.
-        initStates(boxStates.GetLength(0), boxStates.GetLength(1));
+        newGame();
     }
 
     // Update is called once per frame
     void Update()
     {
         
+    }
+
+    /** Called on every new game.
+     */
+    public void newGame()
+    {
+        fitToScreen();
+        // initialize grid box states using data-field size and display them.
+        initStates(boxStates.GetLength(0), boxStates.GetLength(1));
+    }
+
+    public void Reset()
+    {
+        for (int i = 0; i < this.transform.childCount; i++)
+        {
+            Destroy(this.transform.GetChild(i).gameObject);
+        }
     }
 
     /** Fits the grid on screen. To be called when screen settings are changed midgame.
@@ -57,7 +72,7 @@ public class GameBoard : MonoBehaviour
     // Adjust grid size after screen resolution has been adjusted.
     public IEnumerator waitBeforeAdjust()
     {
-        yield return new WaitForSeconds(0.3f);
+        yield return new WaitForSeconds(0.2f);
         fitToScreen();
     }
 
