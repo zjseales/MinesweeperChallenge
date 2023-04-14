@@ -200,7 +200,7 @@ public class GameBoard : MonoBehaviour
      *<param name="name"> The name of the grid square having it's position returned. </param>
      *<returns> The position of the input parameter in the grid space. </returns>
      */
-    private Vector2 getPosition(string name)
+    public Vector2 getPosition(string name)
     {
         string[] vals = Regex.Split(name, @"_");
         // should be two values with a number in each
