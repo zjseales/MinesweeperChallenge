@@ -21,6 +21,7 @@ POSSIBLE FUTURE IMPROVEMENTS:
 - Everything is in 2 scripts, should probably separate these to show better use of object orientation.
 - Make hitting a mine cause an explosion that leaves the grid in disarray.
 - Could also add sounds and music to signal end of game.
+- Create accessors and mutators so that global fields are not made public when unecessary.
 - Add a character that provides commentary on your game.
 - Could add accessibility options: 
 	- larger (resizable) text .

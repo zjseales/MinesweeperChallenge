@@ -27,8 +27,15 @@ public class GameBoard : MonoBehaviour
     public Sprite revealedBox;
     /* The interactable box prefab object. */
     public GameObject box;
+
+    /* Lose condition */
+    private bool lost;
+    /* Win condition */
+    private bool won;
     /* The size of each box in the grid. */
     private int boxSize;
+    /* All revealed boxes */
+    private int numRevealed;
 
     // Start is called before the first frame update
     void Start()
@@ -49,10 +56,17 @@ public class GameBoard : MonoBehaviour
      */
     private void reveal()
     {
-        // get selected object
+        // check if game is over.
+        if (lost || won)
+        {
+            // reset or exit options
+            Debug.Log("Game is over, can not alter state");
+            return;
+        }
+        // retrieve clicked box
         GameObject selectedBox = UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject;
         // do nothing if no object selected
-        if (selectedBox == null) 
+        if (selectedBox == null)
         {
             return;
         }
@@ -66,6 +80,11 @@ public class GameBoard : MonoBehaviour
         switchToRevealed((int)pos.x, (int)pos.y, selectedBox);
     }
 
+    /** Switches unrevealed and unrevealed boxes to a revealed state.
+     *<param name="x"> The x index of the box being revealed </param>
+     *<param name="y"> The y index of the box being revealed </param>
+     *<param name="boxToReveal"> The grid box object having it's state altered. </param>
+     */
     private void switchToRevealed(int x, int y, GameObject boxToReveal)
     {
         // do not reveal if flagged, or if already revealed.
@@ -79,19 +98,78 @@ public class GameBoard : MonoBehaviour
         if (!isMine(new Vector2(x, y)))
         {
             boxToReveal.GetComponent<Image>().sprite = revealedBox;
+            numRevealed++;
             if (boxValues[x, y] != 0)
             {
+                boxToReveal.transform.GetChild(0).GetComponent<Text>().color = setColor(boxValues[x, y]);
                 boxToReveal.transform.GetChild(0).GetComponent<Text>().text = boxValues[x, y].ToString();
             }
             else
             {
                 chainReveal(x, y);
             }
+            if (checkWin())
+            {
+                // Show win screen
+                Debug.Log("Game is won");
+            }
         }
         else if (isMine(new Vector2(x, y)))
         {
             boxToReveal.transform.GetChild(0).GetComponent<Text>().text = "" + 9;
+            lost = true;
+            Debug.Log("Game is lost");
         }
+    }
+
+    /** Determines the color of text given the input value.
+     *<param> The integer value of the revealed box. </param>
+     *<returns> The Color associated with the integer. </returns>
+     */
+    private Color setColor(int v)
+    {
+        Color c = Color.black;
+        switch(v.ToString())
+        {
+            case "1":
+                c = Color.blue;
+                break;
+            case "2":
+                c = new Color(0, 0.4f, 0, 1);
+                break;
+            case "3":
+                c = Color.red;
+                break;
+            case "4":
+                c = new Color(0.3f, 0, 0.6f, 1);
+                break;
+            case "5":
+                c = new Color(0.4f, 0, 0, 1);
+                break;
+            case "6":
+                c = Color.cyan;
+                break;
+            case "7":
+                c = Color.black;
+                break;
+            case "8":
+                c = Color.grey;
+                break;
+        }
+        return c;
+    }
+
+    /** Determines whether the game has been won.
+     *<returns> A boolean defining whether the game has been won or not. </returns>
+     */
+    private bool checkWin()
+    {
+        if ((numRevealed + numMines) == (boxStates.GetLength(0) * boxStates.GetLength(1)))
+        {
+            won = true;
+            return won;
+        }
+        return false;
     }
 
     /** Reveals all neighbouring boxes that have no neighbouring mines.
@@ -143,6 +221,9 @@ public class GameBoard : MonoBehaviour
     {
         int rows = boxStates.GetLength(0);
         int cols = boxStates.GetLength(1);
+        won = false;
+        lost = false;
+        numRevealed = 0;
         fitToScreen();
         // initialize grid box states and values
         initMines(rows, cols);
@@ -260,7 +341,7 @@ public class GameBoard : MonoBehaviour
                 //initialise states
                 GameObject temp = GameObject.Instantiate(this.box, new Vector3(i, j, -5f), Quaternion.identity);
                 temp.name = "b" + i + "_" + j;
-                this.boxStates[i, j] = 1;
+                boxStates[i, j] = 1;
                 temp.transform.position = this.transform.position;
                 temp.GetComponent<RectTransform>().SetParent(this.transform);
 
