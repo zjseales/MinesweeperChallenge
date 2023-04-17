@@ -4,6 +4,17 @@ Author: Zac Seales
 
 My second implementation of the game minesweeper.
 Only had to reference my previous iteration once (for the chainReveal function).
+Also got stuck detecting right clicks on UI buttons so had to find a solution online.
+
+(Currently unfinished - 17/04/2023)
+TO DO:
+- Make clear win and loss conditions, and allow an easy reset of game.
+- Once all non-mines have been revealed, automatically flag all unrevealed squares.
+- Add a mine image, with explosion particle effect.
+- Allow custom game creation, possibly use sliders to avoid invalid input checks.
+- Ensure flags can't be toggled after game is over.
+- Change Unrevealed square image to suit the theme, and make flags more clearly visible.
+- Make flags resize with grid squares and ensure their bounds do not overlap other grid squares.
 
 IMPROVEMENTS:
 - UI menus, including:  
@@ -16,6 +27,7 @@ IMPROVEMENTS:
 - Ensured all grid sizes fit on any screen size.
 
 POSSIBLE FUTURE IMPROVEMENTS:
+- Question mark toggles for possible grid squares.
 - Make window size continuously resizable (rather than choosing from a set of options).
 - Have multiple soundtracks to choose from (custom playlists).
 - Everything is in 2 scripts, should probably separate these to show better use of object orientation.
@@ -35,6 +47,9 @@ POSSIBLE FUTURE IMPROVEMENTS:
 	-("Reveal square 6, 12", "Flag square 8, 10", "Restart", "New Game - Difficulty Hard").
 
 RESOURCES:
+
+(Right Click on UI buttons - solution by jfarias)
+https://forum.unity.com/threads/can-the-ui-buttons-detect-a-right-mouse-click.279027/
 
 (Unity API)
 https://docs.unity3d.com/ScriptReference/
