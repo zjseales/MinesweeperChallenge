@@ -4,18 +4,30 @@ using System.Collections.Generic;
 using UnityEngine.EventSystems;
 using UnityEngine;
 
+/** ToggleFlag.cs
+ *  MinesweeperUnity project - Personal challenge 2023
+ *  
+ *  Class that detects right click on buttons and toggles flags on/off.
+ *  @author Zac Seales
+ */
+
 public class ToggleFlag : MonoBehaviour, IPointerClickHandler
 {
     /* The current active game state. */
     private GameObject activeGameState;
 
-    // Turn off flag on instantiation
+    /** Turn off flag and mine images on instantiation.
+     */
     void Start()
     {
         this.transform.GetChild(1).gameObject.SetActive(false);
+        this.transform.GetChild(2).gameObject.SetActive(false);
         activeGameState = GameObject.Find("Game");
     }
 
+    /** Detects right click and toggles the flag on the grid square that was selected.
+     * <param name="eventData"> The click event that occurs. </param>
+     */
     public void OnPointerClick(PointerEventData eventData)
     {
         // Detects right click and toggles a flag, if able.
@@ -48,6 +60,12 @@ public class ToggleFlag : MonoBehaviour, IPointerClickHandler
         return new Vector2(x, y);
     }
 
+    /** Toggles flag on/off.
+     * <param name="x"> The x coordinate of the square having its flag toggled. </param>
+     * <param name="y"> The y coordinate of the square being toggled. </param>
+     * <param name="flag"> The flag child object being toggled. </param>
+     * <param name="states"> The grid states to be changed. </param>
+     */
     private void toggleFlag(int x, int y, GameObject flag, int[,] states)
     {
         states[x, y] *= -1;

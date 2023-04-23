@@ -10,7 +10,7 @@ Also got stuck detecting right clicks on UI buttons so had to find a solution on
 TO DO:
 - Make clear win and loss conditions, and allow an easy reset of game.
 - Once all non-mines have been revealed, automatically flag all unrevealed squares.
-- Add a mine image, with explosion particle effect.
+- Add explosion particle effect.
 - Allow custom game creation, possibly use sliders to avoid invalid input checks.
 - Ensure flags can't be toggled after game is over.
 - Change Unrevealed square image to suit the theme, and make flags more clearly visible.

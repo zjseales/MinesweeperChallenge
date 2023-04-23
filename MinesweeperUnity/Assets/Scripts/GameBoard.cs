@@ -25,6 +25,8 @@ public class GameBoard : MonoBehaviour
     public int numMines;
     /* The background image for a revealed square. */
     public Sprite revealedBox;
+    /* The background image for a mined square. */
+    public Sprite mineBox;
     /* The interactable box prefab object. */
     public GameObject box;
 
@@ -114,10 +116,12 @@ public class GameBoard : MonoBehaviour
                 Debug.Log("Game is won");
             }
         }
-        else if (isMine(new Vector2(x, y)))
+        else
         {
-            boxToReveal.transform.GetChild(0).GetComponent<Text>().text = "" + 9;
+            // reveals mine and sets loss condition to true.
             lost = true;
+            boxToReveal.GetComponent<Image>().sprite = mineBox;
+            boxToReveal.transform.GetChild(2).gameObject.SetActive(true);
             Debug.Log("Game is lost");
         }
     }
@@ -147,7 +151,7 @@ public class GameBoard : MonoBehaviour
                 c = new Color(0.4f, 0, 0, 1);
                 break;
             case "6":
-                c = Color.cyan;
+                c = new Color(0, 0.6f, 0.6f, 1);
                 break;
             case "7":
                 c = Color.black;
