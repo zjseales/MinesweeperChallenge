@@ -6,15 +6,14 @@ My second implementation of the game minesweeper.
 Only had to reference my previous iteration once (for the chainReveal function).
 Also got stuck detecting right clicks on UI buttons so had to find a solution online.
 
-(Currently unfinished - 17/04/2023)
+(Currently unfinished - 23/04/2023)
 TO DO:
 - Make clear win and loss conditions, and allow an easy reset of game.
 - Once all non-mines have been revealed, automatically flag all unrevealed squares.
-- Add explosion particle effect.
+- Add explosion particle effect with sound.
 - Allow custom game creation, possibly use sliders to avoid invalid input checks.
-- Ensure flags can't be toggled after game is over.
 - Change Unrevealed square image to suit the theme, and make flags more clearly visible.
-- Make flags resize with grid squares and ensure their bounds do not overlap other grid squares.
+	- Tried some alternatives but none seemed to suit better than current.
 
 IMPROVEMENTS:
 - UI menus, including:  
