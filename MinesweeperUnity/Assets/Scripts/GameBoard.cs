@@ -29,11 +29,11 @@ public class GameBoard : MonoBehaviour
     public Sprite mineBox;
     /* The interactable box prefab object. */
     public GameObject box;
-
     /* Lose condition */
-    private bool lost;
+    public bool lost;
     /* Win condition */
-    private bool won;
+    public bool won;
+
     /* The size of each box in the grid. */
     private int boxSize;
     /* All revealed boxes */

@@ -68,6 +68,12 @@ public class ToggleFlag : MonoBehaviour, IPointerClickHandler
      */
     private void toggleFlag(int x, int y, GameObject flag, int[,] states)
     {
+        // do nothing if game is over.
+        if (activeGameState.GetComponent<GameBoard>().lost || activeGameState.GetComponent<GameBoard>().won)
+        {
+            return;
+        }
+
         states[x, y] *= -1;
         if (states[x, y] == 1)
         {
