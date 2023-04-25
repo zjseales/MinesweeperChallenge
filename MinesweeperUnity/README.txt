@@ -8,7 +8,6 @@ Also got stuck detecting right clicks on UI buttons so had to find a solution on
 
 (Currently unfinished - 25/04/2023)
 TO DO:
-- Once all non-mines have been revealed, automatically flag all unrevealed squares.
 - Add explosion particle effect with sound.
 - Allow custom game creation, possibly use sliders to avoid invalid input checks.
 - Add a timer.
@@ -24,6 +23,7 @@ IMPROVEMENTS:
 - Ensured all grid sizes fit on any screen size.
 
 POSSIBLE FUTURE IMPROVEMENTS:
+- Once all non-mines have been revealed, automatically flag all unrevealed squares.
 - Question mark toggles for possible grid squares.
 - Make window size continuously resizable (rather than choosing from a set of options).
 - Have multiple soundtracks to choose from (custom playlists).
