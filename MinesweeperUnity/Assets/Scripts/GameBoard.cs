@@ -33,6 +33,8 @@ public class GameBoard : MonoBehaviour
     public bool lost;
     /* Win condition */
     public bool won;
+    /* Game over menu. */
+    public GameObject gameOverMenu;
 
     /* The size of each box in the grid. */
     private int boxSize;
@@ -62,7 +64,6 @@ public class GameBoard : MonoBehaviour
         if (lost || won)
         {
             // reset or exit options
-            Debug.Log("Game is over, can not alter state");
             return;
         }
         // retrieve clicked box
@@ -113,7 +114,7 @@ public class GameBoard : MonoBehaviour
             if (checkWin())
             {
                 // Show win screen
-                Debug.Log("Game is won");
+                gameOverMenu.SetActive(true);
             }
         }
         else
@@ -122,7 +123,10 @@ public class GameBoard : MonoBehaviour
             lost = true;
             boxToReveal.GetComponent<Image>().sprite = mineBox;
             boxToReveal.transform.GetChild(2).gameObject.SetActive(true);
-            Debug.Log("Game is lost");
+            // Displays loss screen
+            gameOverMenu.transform.GetChild(0).GetComponent<Text>().color = new Color(1f, 0, 0, 1f);
+            gameOverMenu.transform.GetChild(0).GetComponent<Text>().text = "You Lose :(";
+            gameOverMenu.SetActive(true);
         }
     }
 
@@ -171,6 +175,8 @@ public class GameBoard : MonoBehaviour
         if ((numRevealed + numMines) == (boxStates.GetLength(0) * boxStates.GetLength(1)))
         {
             won = true;
+            gameOverMenu.transform.GetChild(0).GetComponent<Text>().color = new Color(0, 1f, 0.15f, 1);
+            gameOverMenu.transform.GetChild(0).GetComponent<Text>().text = "You Win!!!";
             return won;
         }
         return false;
@@ -223,6 +229,7 @@ public class GameBoard : MonoBehaviour
      */
     public void newGame()
     {
+        gameOverMenu.SetActive(false);
         int rows = boxStates.GetLength(0);
         int cols = boxStates.GetLength(1);
         won = false;
